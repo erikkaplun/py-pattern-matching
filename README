@@ -1,0 +1,74 @@
+match_ok, value1, value2, value3 = match(('foo', ANY, (ANY, ANY)), ('foo', 1, (2, 3)))
+assert match_ok and value1 == 1 and value2 == 2 and value3 = 3
+Usage
+=====
+
+Call the `patternmatching.match()` function with two arguments:
+
+Argument 1: the pattern to match against
+Argument 2: the data structure to match
+Optional argument flatten: `True` to have the matched values flattened, i.e. returned as a flat tuple regardless of their position in the structure of the matched data.
+
+Return value:
+    if flatten is true:
+        match_ok, [matched_value, matched_value, matched_value, ...]
+    if flatten is not true:
+        match_ok, matched_data_structure
+
+Caveat:
+    if all matched values in the pattern are ignored, `match()` does not return a `tuple` but a boolean.
+    YES:
+        `match_ok = match(PATTERN, DATA)`
+    NO:
+        `match_ok, = match(PATTERN, DATA)`
+
+
+Examples
+========
+
+MATCH OK
+--------
+
+match_ok, value = match(ANY, 'foobar')
+assert match_ok and value == 'foobar'
+
+match_ok = match(IGNORE(ANY), 'foobar')
+assert match_ok
+
+match_ok, value1, value2 match((ANY, ANY), ('foo', 'bar'))
+assert match_ok and value1 == 'foo' and value2 == 'bar'
+
+match_ok, (value1, value2) = match((ANY, ANY), ('foo', 'bar'), flatten=False)
+assert match_ok and value1 == 'foo' and value2 == 'bar'
+
+match_ok, (value1, ) = match((ANY, IGNORE(ANY)), ('foo', 'whatev'))
+assert match_ok and value1 == 'foo'
+
+match_ok, value1, value2 = match(('foo', ANY, ANY), ('foo', 1, 2))
+assert match_ok and value1 == 1 and value2 == 2
+
+match_ok, value1, value2, value3 = match(('foo', ANY, (ANY, ANY)), ('foo', 1, (2, 3)))
+assert match_ok and value1 == 1 and value2 == 2 and value3 = 3
+
+match_ok, (value1, (value2, value3)) = match(('foo', ANY, (ANY, ANY)), ('foo', 1, (2, 3)), flatten=False)
+assert match_ok and value1 == 1 and value2 == 2 and value3 = 3
+
+NO MATCH
+--------
+
+match_ok = match(3, 4)
+assert not match_ok
+
+# notice how you can still successfully do unpacking of return values and just ignore `value` if the match failed
+match_ok, value = match(IS_INSTANCE(unicode), '123132')
+assert not match_ok
+
+# notice how you can still successfully do unpacking of return values and just ignore `value` if the match failed
+match_ok, (value1, (value2, value3)) = match(('foo', (ANY, (ANY, ANY))), ('not-foo', (1, (2, 3))))
+assert not match_ok
+
+# ...even when the structure of the data completely mismatches
+match_ok, (value1, (value2, value3)) = match(('foo', (ANY, (ANY, ANY))), ('foo', 'blabla'))
+assert not match_ok
+
+# ...don't rely on `value1`, `value2` and `value3` being `None` though--the matcher can still return whatever it wants there; you have to check `match_ok` yourself.
