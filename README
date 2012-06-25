@@ -33,7 +33,10 @@ tuple and you only care about some parts of the tuple and not the
 entire tuple:
 
     retval = some_function_under_test()
-    assert retval and isinstance(retval, tuple) and len(retval) == 3 and retval[0] == 'foo' and isinstance(retval[1], tuple) and len(retval[1]) == 2 and isinstance(retval[1][1], SomeException)
+    assert retval and isinstance(retval, tuple) \
+        and len(retval) == 3 and retval[0] == 'foo' \
+        and isinstance(retval[1], tuple) and len(retval[1]) == 2 \
+        and isinstance(retval[1][1], SomeException)
 
 With pattern matching:
 
