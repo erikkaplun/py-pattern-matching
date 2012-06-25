@@ -5,9 +5,12 @@ Usage
 
 Call the `patternmatching.match()` function with two arguments:
 
-Argument 1: the pattern to match against
-Argument 2: the data structure to match
-Optional argument flatten: `True` to have the matched values flattened, i.e. returned as a flat tuple regardless of their position in the structure of the matched data.
+* Argument 1: the pattern to match against
+* Argument 2: the data structure to match
+
+* Optional argument `flatten`: `True` to have the matched values
+  flattened, i.e. returned as a flat tuple regardless of their position
+  in the structure of the matched data.
 
 Return value:
     if flatten is true:
