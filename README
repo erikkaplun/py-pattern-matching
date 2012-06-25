@@ -26,6 +26,23 @@ Caveat:
         `match_ok, = match(PATTERN, DATA)`
 
 
+Usage in (unit) tests (but also anywhere else)
+==============================================
+
+Comparing the return values of functions is tedious if you can't
+simply use the `==` operator. For example when a function returns a
+tuple and you only care about some parts of the tuple and not the
+entire tuple:
+
+    retval = some_function_under_test()
+    assert retval and isinstance(retval, tuple) and len(retval) == 3 and retval[0] == 'foo' and isinstance(retval[1], tuple) and len(retval[1]) == 2 and isinstance(retval[1][1], SomeException)
+
+With pattern matching:
+
+    retval = some_function_under_test()
+    assert retval == ('foo', (ANY, IS_INSTANCE(SomeException)), ANY)
+
+
 Examples
 ========
 
