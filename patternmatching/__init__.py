@@ -8,11 +8,11 @@ class _Values(list):
 def match(pattern, data, flatten=True):
     def _match(pattern, data, success):
         def _is_ignore(pattern):
-            return not (isinstance(pattern, _Matcher) and not pattern.ignore)
+            return pattern is IGNORE or not (isinstance(pattern, _Matcher) and not pattern.ignore)
 
         is_tuple = isinstance(pattern, tuple)
         if not is_tuple:
-            return (pattern == data if success else False,
+            return (pattern is IGNORE or pattern == data if success else False,
                     data if not _is_ignore(pattern) else NOTHING)
 
         values = NOTHING
@@ -71,9 +71,6 @@ def IGNORE(x):
         x = x.clone()
         x.ignore = True
     return x
-
-
-IGNORE.__eq__ = lambda _: True
 
 
 class IS_INSTANCE(_Matcher):

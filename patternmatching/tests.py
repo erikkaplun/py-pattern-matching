@@ -105,6 +105,10 @@ def test_advanced():
     YES((), IGNORE(IS_INSTANCE(int)), 1)
 
 
+def test_ignore_shortcut():
+    YES((), IGNORE, 1)
+
+
 @contextmanager
 def assert_not_raises(exc_class=Exception, message=None):
     if isinstance(exc_class, basestring):
